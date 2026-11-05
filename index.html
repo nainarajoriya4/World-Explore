@@ -65,9 +65,78 @@
               countries <span aria-hidden="true">→</span></button>
           </div>
         </div>
+        <div class="mx-auto mt-4 grid max-w-3xl grid-cols-1 gap-3 text-left sm:grid-cols-3">
+          <select id="sortFilter" aria-label="Sort countries"
+            class="w-full rounded-xl border border-white/10 bg-slate-900/80 px-4 py-3 text-sm font-semibold text-slate-200 outline-none focus:border-cyan-400">
+            <option value="default">↕ Sort countries</option>
+            <option value="az">Name: A - Z</option>
+            <option value="za">Name: Z - A</option>
+            <option value="populationHigh">Population: High to Low</option>
+            <option value="populationLow">Population: Low to High</option>
+          </select>
+          <select id="regionFilter" aria-label="Filter by region"
+            class="w-full rounded-xl border border-white/10 bg-slate-900/80 px-4 py-3 text-sm font-semibold text-slate-200 outline-none focus:border-cyan-400">
+            <option value="all">⌖ All regions</option>
+            <option value="Asia">Asia</option>
+            <option value="Europe">Europe</option>
+            <option value="Africa">Africa</option>
+            <option value="Americas">Americas</option>
+            <option value="Oceania">Oceania</option>
+          </select>
+          <select id="favoritesFilter" aria-label="Filter favorites"
+            class="w-full rounded-xl border border-white/10 bg-slate-900/80 px-4 py-3 text-sm font-semibold text-slate-200 outline-none focus:border-cyan-400">
+            <option value="all">♡ All countries</option>
+            <option value="favorites">♥ Favorite countries</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-5 pt-10 lg:px-8">
+      <div class="mb-7 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+        <div>
+          <p class="text-xs font-extrabold uppercase tracking-[.2em] text-cyan-600">Explore the globe</p>
+          <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-slate-900" style="font-family:Manrope,sans-serif">
+            Countries around the world</h2>
+          <p class="mt-1 text-sm text-slate-500">Find your next destination.</p>
+        </div>
+        <span
+          class="w-fit rounded-full bg-white px-4 py-2 text-xs font-bold text-slate-500 shadow-sm ring-1 ring-slate-200">LIVE
+          COUNTRY DIRECTORY</span>
+      </div>
+      <div class="stats-container mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div class="stat-card"><span class="stat-icon bg-blue-50 text-blue-600">🌐</span>
+          <div>
+            <p class="stat-label">Total countries</p>
+            <p class="stat-value" id="totalCountries">0</p>
+          </div>
+        </div>
+        <div class="stat-card"><span class="stat-icon bg-cyan-50 text-cyan-600">✦</span>
+          <div>
+            <p class="stat-label">Showing countries</p>
+            <p class="stat-value" id="showingCountries">0</p>
+          </div>
+        </div>
+        <div class="stat-card"><span class="stat-icon bg-rose-50 text-rose-500">♥</span>
+          <div>
+            <p class="stat-label">Your favorites</p>
+            <p class="stat-value" id="favoriteCount">0</p>
+          </div>
+        </div>
+      </div>
+      <div id="countryContainer" class="country-container">
+        <p class="empty-message">Countries will appear here...</p>
       </div>
     </section>
   </main>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div
+      class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-7 text-sm text-slate-500 sm:flex-row lg:px-8">
+      <p class="font-bold text-slate-700">🌍 WorldExplorer</p>
+      <p>Discover more. Learn more. Explore the world.</p>
+    </div>
+  </footer>
 </body>
 
 </html>
