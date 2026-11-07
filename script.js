@@ -38,3 +38,54 @@ function formatPopulation(num) {
   }
   return String(num);
 }
+
+// API Error Display
+function showError() {
+  container.innerHTML =
+    '<p class="empty-message">Unable to load countries. Please try again.</p>';
+
+  const retryBtn = document.createElement("button");
+  retryBtn.type = "button";
+  retryBtn.className = "retry-btn";
+  retryBtn.textContent = "Retry";
+  retryBtn.addEventListener("click", fetchCountries);
+  container.appendChild(retryBtn);
+}
+
+// Fetch Countries from API
+async function fetchCountries() {
+  container.innerHTML = `
+    <div class="loading-card"></div>
+    <div class="loading-card"></div>
+    <div class="loading-card"></div>
+  `;
+
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+      throw new Error("Failed to fetch countries");
+    }
+
+    const data = await response.json();
+    allCountries = data.map((country) => {
+      const name = typeof country.name === 'object' ? (country.name.common || country.name.official || 'Unknown') : (country.name || 'Unknown');
+      const capital = Array.isArray(country.capital) ? (country.capital[0] || 'N/A') : (country.capital || 'N/A');
+      const flag = country.flags?.svg || country.flags?.png || country.flag || '';
+      const rawPop = Number(country.population) || 0;
+      return {
+        name: name,
+        capital: capital,
+        region: country.region || 'Unknown',
+        flag: flag,
+        population: formatPopulation(rawPop),
+        rawPopulation: rawPop
+      };
+    });
+
+    allCountries.sort((a, b) => a.name.localeCompare(b.name));
+    renderCards(allCountries);
+  } catch (error) {
+    console.error("Error loading countries:", error);
+    showError();
+  }
+}

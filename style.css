@@ -83,3 +83,36 @@ body {
     text-align: center;
     color: #94a3b8;
 }
+
+/* Loading Animation */
+.loading-card {
+    height: 320px;
+    border-radius: 1.25rem;
+    background: linear-gradient(
+        90deg,
+        #1e293b 25%,
+        #334155 50%,
+        #1e293b 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+    to {
+        background-position: -200% 0;
+    }
+}
+
+.retry-btn {
+    display: block;
+    margin: 1rem auto;
+    border: 0;
+    border-radius: .65rem;
+    background: #0284c7;
+    padding: .6rem .9rem;
+    color: white;
+    cursor: pointer;
+    font-size: .8rem;
+    font-weight: 700;
+}
