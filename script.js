@@ -89,3 +89,40 @@ async function fetchCountries() {
     showError();
   }
 }
+
+// Dashboard Statistics Update
+function updateStatistics(filteredCountries) {
+  totalCountries.textContent = allCountries.length;
+  showingCountries.textContent = filteredCountries.length;
+  favoriteCount.textContent = favoriteCountries.length;
+}
+
+// Country Cards Generator
+function renderCards(countries) {
+  container.innerHTML = "";
+  updateStatistics(countries);
+
+  if (countries.length === 0) {
+    container.innerHTML =
+      '<p class="empty-message">No countries found. Try a different search!</p>';
+    return;
+  }
+
+  countries.forEach((country) => {
+    const card = document.createElement("div");
+    card.className = "country-card";
+    card.innerHTML = `
+      <img class="country-flag" src="${country.flag}" alt="Flag of ${country.name}" loading="lazy">
+      <div class="card-info">
+        <h2>${country.name}</h2>
+        <p><span>Capital:</span> ${country.capital}</p>
+        <p><span>Region:</span> ${country.region}</p>
+        <p><span>Population:</span> ${country.population}</p>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+fetchCountries();
