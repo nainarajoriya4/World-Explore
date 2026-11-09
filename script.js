@@ -83,7 +83,7 @@ async function fetchCountries() {
     });
 
     allCountries.sort((a, b) => a.name.localeCompare(b.name));
-    renderCards(allCountries);
+    filterCountries();
   } catch (error) {
     console.error("Error loading countries:", error);
     showError();
@@ -124,5 +124,41 @@ function renderCards(countries) {
     container.appendChild(card);
   });
 }
+
+
+
+// Search and Filter Function
+function filterCountries() {
+  const searchText = searchInput.value.trim().toLowerCase();
+  const selectedRegion = regionFilter.value;
+  const selectedFavorite = favoritesFilter.value;
+
+  const result = allCountries.filter((country) => {
+    const matchesSearch =
+      country.name.toLowerCase().includes(searchText) ||
+      country.capital.toLowerCase().includes(searchText);
+
+    const matchesRegion =
+      selectedRegion === "all" || country.region === selectedRegion;
+
+    const matchesFavorite =
+      selectedFavorite !== "favorites" ||
+      favoriteCountries.includes(country.name);
+
+    return matchesSearch && matchesRegion && matchesFavorite;
+  });
+
+  renderCards(result);
+}
+
+// Event Listeners for Search & Filter
+searchButton.addEventListener("click", filterCountries);
+searchInput.addEventListener("keyup", (event) => {
+  if (event.key === "Enter") {
+    filterCountries();
+  }
+});
+regionFilter.addEventListener("change", filterCountries);
+favoritesFilter.addEventListener("change", filterCountries);
 
 fetchCountries();
