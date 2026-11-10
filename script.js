@@ -148,7 +148,7 @@ function filterCountries() {
     return matchesSearch && matchesRegion && matchesFavorite;
   });
 
-  renderCards(result);
+  renderCards(sortCountries(result));
 }
 
 // Event Listeners for Search & Filter
@@ -160,5 +160,26 @@ searchInput.addEventListener("keyup", (event) => {
 });
 regionFilter.addEventListener("change", filterCountries);
 favoritesFilter.addEventListener("change", filterCountries);
+
+
+
+// Sorting Function
+function sortCountries(countries) {
+  const sorted = [...countries];
+
+  if (sortFilter.value === "az") {
+    sorted.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortFilter.value === "za") {
+    sorted.sort((a, b) => b.name.localeCompare(a.name));
+  } else if (sortFilter.value === "populationHigh") {
+    sorted.sort((a, b) => b.rawPopulation - a.rawPopulation);
+  } else if (sortFilter.value === "populationLow") {
+    sorted.sort((a, b) => a.rawPopulation - b.rawPopulation);
+  }
+
+  return sorted;
+}
+
+sortFilter.addEventListener("change", filterCountries);
 
 fetchCountries();
