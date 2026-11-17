@@ -1,6 +1,6 @@
 # 🌍 World Explorer
 
-A responsive, modern web application for exploring countries around the globe, discovering facts, comparing countries, and saving your favorite destinations. Built with **Tailwind CSS**, custom CSS, and vanilla **JavaScript** powered by the REST Countries API.
+A responsive, modern web application for exploring countries around the globe, discovering facts, comparing countries, and saving your favorite destinations. Built with **Tailwind CSS** and vanilla **JavaScript** powered by the REST Countries API.
 
 ---
 
@@ -13,7 +13,7 @@ A responsive, modern web application for exploring countries around the globe, d
 - 🤍 **Favorites System:** Save your favorite countries with local storage persistence across sessions.
 - ⚖️ **Country Comparison:** Select and compare two countries side-by-side with flags, capitals, regions, and populations.
 - 📱 **Interactive Details Modal:** Click any country to view an expanded details card with keyboard navigation (Escape to close).
-- ⚡ **Skeleton Loading:** Smooth shimmer animation while data loads from the API.
+- ⚡ **Skeleton Loading:** Smooth pulse animation while data loads from the API.
 - 🛡️ **Error Handling & Retry:** User-friendly fallback screen with an instant retry button if the network fails.
 - 🎨 **Responsive Dark Theme:** Sleek dark-mode aesthetic with Tailwind CSS and glassmorphic styling.
 
@@ -22,8 +22,7 @@ A responsive, modern web application for exploring countries around the globe, d
 ## 🛠️ Tech Stack
 
 - **HTML5** – Semantic markup and accessible structure.
-- **Tailwind CSS (CDN)** – Utility-first CSS styling for rapid layout and responsiveness.
-- **Custom CSS3** – Glassmorphic cards, custom modal popups, comparison tables, and shimmer animations.
+- **Tailwind CSS (CDN)** – Utility-first styling for layout, components, animations, and responsiveness.
 - **Vanilla JavaScript (ES6+)** – Asynchronous API fetching (`async/await`), DOM manipulation, and `localStorage` state management.
 - **API** – [countries.dev](https://countries.dev) REST Countries data.
 
@@ -49,8 +48,7 @@ No build tools or installations required! You can run this project locally in se
 
 ```text
 WORLD-EXPLORER-Tailwind-UI/
-├── index.html        # Main HTML markup and UI structure
-├── style.css         # Custom component styling, animations, and modals
+├── index.html        # Main HTML markup, Tailwind utility classes and theme config
 ├── script.js         # API integration, search, filter, favorites & modal logic
 ├── .gitignore        # Git ignore rules
 └── README.md         # Project documentation and guide

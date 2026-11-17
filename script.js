@@ -1,89 +1,62 @@
-const API_URL =
-  "https://countries.dev/countries?fields=name,capital,region,population,flags";
+const API_URL ="https://countries.dev/countries?fields=name,capital,region,population,flags";
 
-// Country cards dikhane wala container
-const container = document.querySelector("#countryContainer");
+const container = document.querySelector("#countryContainer");// Country cards container
+const searchInput = document.querySelector("#searchInput");//search input box
+const regionFilter = document.querySelector("#regionFilter");//region dropdown
+const searchButton = document.querySelector("#searchBtn");//search button
+const sortFilter = document.querySelector("#sortFilter");//sort dropdown
+const favoritesFilter = document.querySelector("#favoritesFilter");//favorites dropdown
+const countryModal = document.querySelector("#countryModal");// Popup container
+const modalDetails = document.querySelector("#modalDetails");// Popup details container
+const closeModal = document.querySelector("#closeModal");// Popup close button
+const totalCountries = document.querySelector("#totalCountries");// Total countries count
+const showingCountries = document.querySelector("#showingCountries");// Showing countries count
+const favoriteCount = document.querySelector("#favoriteCount");// Favorite countries count
+const comparisonContainer = document.querySelector("#comparisonContainer");// Comparison section container
 
-// Search box
-const searchInput = document.querySelector("#searchInput");
+// Reusable Tailwind class strings
+const BUTTON_BASE =
+  "block w-full cursor-pointer rounded-xl px-4 py-3 text-[0.82rem] font-extrabold transition";
 
-// Region dropdown
-const regionFilter = document.querySelector("#regionFilter");
+const EMPTY_MESSAGE =
+  "col-span-full rounded-2xl border border-dashed border-slate-600 bg-slate-800 px-4 py-12 text-center text-slate-400";
 
-// Search button
-const searchButton = document.querySelector("#searchBtn");
+// Popup open / close (Tailwind hidden + flex)
+function openModal() {
+  countryModal.classList.remove("hidden");
+  countryModal.classList.add("flex");
+}
 
-// Sorting dropdown
-const sortFilter = document.querySelector("#sortFilter");
-
-// Favorites dropdown
-const favoritesFilter = document.querySelector("#favoritesFilter");
-
-// Country details popup
-const countryModal = document.querySelector("#countryModal");
-
-// Popup ke andar details dikhane wala element
-const modalDetails = document.querySelector("#modalDetails");
-
-// Popup close button
-const closeModal = document.querySelector("#closeModal");
-
-// Dashboard Statistics
-const totalCountries = document.querySelector("#totalCountries");
-const showingCountries = document.querySelector("#showingCountries");
-const favoriteCount = document.querySelector("#favoriteCount");
-
-const comparisonContainer = document.querySelector("#comparisonContainer");
+function hideModal() {
+  countryModal.classList.add("hidden");
+  countryModal.classList.remove("flex");
+}
 
 let allCountries = [];
-
-// User ke favorite countries
-let favoriteCountries = [];
-
-// Comparison ke liye selected countries
-let selectedCountries = [];
-// 4. Browser se Purane Favorites Load Karna
-
-// localStorage browser mein data save rakhta hai.
-// Page refresh hone ke baad bhi favorites safe rahenge.
-
-// JSON.parse saved text ko JavaScript array mein convert karta hai.
+let favoriteCountries = [];// Favorite countries ka array
+let selectedCountries = [];// Comparison ke liye selected countries ka array
 
 try {
   favoriteCountries = JSON.parse(
     localStorage.getItem("favoriteCountries")
-  ) || [];
+  ) || [];// Agar localStorage mein data nahi hai to empty array use karna
 
 } catch {
   favoriteCountries = [];
-}
-// 5. Population Format Karna
-
-// Population ko readable format mein convert karna.
-// Example: 1000000 = 1.0 M
+}// Agar localStorage mein data corrupt hai to empty array use karna
 
 function formatPopulation(num) {
-
-  // 1 Billion ya usse zyada population
-  if (num >= 1_000_000_000) {
+  if (num >= 1000_000_000) {
     return (num / 1_000_000_000).toFixed(2) + " B";
-  }
-
-  // 1 Million ya usse zyada population
+  }// 1 Billion ya usse zyada population
   if (num >= 1_000_000) {
     return (num / 1_000_000).toFixed(1) + " M";
-  }
-
-  // 1 Thousand ya usse zyada population
+  }// 1 Million ya usse zyada population
   if (num >= 1_000) {
     return (num / 1_000).toFixed(0) + " K";
-  }
-
-  // Chhoti population ko string mein convert karna
-  return String(num);
+  }// 1 Thousand ya usse zyada population
+  return String(num);// 1 Thousand se kam population
 }
-
-
 // 6. Dashboard Statistics Update Karna
 
 // Total countries, showing countries aur favorites ki count.
@@ -118,32 +91,28 @@ function renderCards(countries) {
   // Agar koi country nahi mili
   if (countries.length === 0) {
 
-    container.innerHTML =
-      '<p class="empty-message">No countries found. Try a different search!</p>';
+    container.innerHTML = `<p class="${EMPTY_MESSAGE}">No countries found. Try a different search!</p>`;
 
     return;
   }
-
-
   // Har country ke liye alag card banana
   countries.forEach((country) => {
-
     // Naya div create karna
     const card = document.createElement("div");
-
-    // Card ko CSS class dena
-    card.className = "country-card";
+    // Card ko Tailwind utility classes dena
+    card.className =
+      "overflow-hidden rounded-[1.25rem] border border-slate-700 bg-slate-800 shadow-[0_4px_18px_rgba(0,0,0,0.15)] transition duration-300 hover:-translate-y-1 hover:border-sky-400 hover:shadow-xl";
 
 
     // Card ke andar flag aur country details add karna
     card.innerHTML = `
-      <img class="country-flag" src="${country.flag}" alt="Flag of ${country.name}" loading="lazy">
+      <img class="block h-[180px] w-full bg-slate-900 object-cover" src="${country.flag}" alt="Flag of ${country.name}" loading="lazy">
 
-      <div class="card-info">
-        <h2>${country.name}</h2>
-        <p><span>Capital:</span> ${country.capital}</p>
-        <p><span>Region:</span> ${country.region}</p>
-        <p><span>Population:</span> ${country.population}</p>
+      <div class="px-5 pb-2 pt-5">
+        <h2 class="mb-4 font-display text-[1.2rem] font-extrabold tracking-tight text-slate-50">${country.name}</h2>
+        <p class="my-2.5 flex justify-between gap-4 text-sm text-slate-400"><span class="font-bold text-slate-200">Capital:</span> ${country.capital}</p>
+        <p class="my-2.5 flex justify-between gap-4 text-sm text-slate-400"><span class="font-bold text-slate-200">Region:</span> ${country.region}</p>
+        <p class="my-2.5 flex justify-between gap-4 text-sm text-slate-400"><span class="font-bold text-slate-200">Population:</span> ${country.population}</p>
       </div>
     `;
 
@@ -155,22 +124,23 @@ function renderCards(countries) {
     // Button ka type
     favoriteBtn.type = "button";
 
-    // CSS class
-    favoriteBtn.className = "favorite-btn";
+    // Tailwind classes
+    favoriteBtn.className = BUTTON_BASE + " bg-[#4c1d3d] text-rose-300 hover:bg-rose-900";
 
-    // Button ke saath country ka naam attach karna
+    // Button ke saath country ka naam aur action attach karna
     favoriteBtn.dataset.name = country.name;
+    favoriteBtn.dataset.action = "favorite";
 
 
     // Agar country already favorite hai
     if (favoriteCountries.includes(country.name)) {
 
-      favoriteBtn.textContent = "❤️ Remove Favorite";
+      favoriteBtn.innerHTML = '<span class="emoji-sm">❤️</span> Remove Favorite';
 
     } else {
 
       // Agar favorite nahi hai
-      favoriteBtn.textContent = "🤍 Add Favorite";
+      favoriteBtn.innerHTML = '<span class="emoji-sm">🤍</span> Add Favorite';
     }
 
 
@@ -180,9 +150,10 @@ function renderCards(countries) {
 
     detailsBtn.type = "button";
 
-    detailsBtn.className = "details-btn";
+    detailsBtn.className = BUTTON_BASE + " bg-sky-900 text-sky-300 hover:bg-sky-800";
 
     detailsBtn.dataset.name = country.name;
+    detailsBtn.dataset.action = "details";
 
     detailsBtn.textContent = "View Details";
 
@@ -193,9 +164,10 @@ function renderCards(countries) {
 
     compareBtn.type = "button";
 
-    compareBtn.className = "compare-btn";
+    compareBtn.className = BUTTON_BASE + " bg-indigo-900 text-violet-300 hover:bg-indigo-700";
 
     compareBtn.dataset.name = country.name;
+    compareBtn.dataset.action = "compare";
 
 
     // Check karna ki country already comparison mein hai ya nahi
@@ -209,8 +181,13 @@ function renderCards(countries) {
     }
 
 
-    // Teeno buttons ko card mein add karna
-    card.append(favoriteBtn, detailsBtn, compareBtn);
+    // Teeno buttons ko ek wrapper mein rakh kar card mein add karna
+    const cardActions = document.createElement("div");
+    cardActions.className = "flex flex-col gap-2 px-5 pb-5 pt-2";
+    cardActions.append(favoriteBtn, detailsBtn, compareBtn);
+
+
+    card.append(cardActions);
 
 
     // Complete card ko webpage par dikhana
@@ -300,7 +277,6 @@ function filterCountries() {
   renderCards(sortCountries(result));
 }
 
-
 // 10. Favorite Add / Remove Karna
 
 function toggleFavorite(countryName) {
@@ -345,28 +321,28 @@ function showCountryDetails(countryName) {
 
   // Popup ke andar country ki details add karna
   modalDetails.innerHTML = `
-    <div class="modal-details">
+    <div>
 
       <img
         src="${selectedCountry.flag}"
-        class="modal-flag"
+        class="mb-5 block h-[190px] w-full rounded-2xl bg-slate-900 object-contain"
         alt="Flag of ${selectedCountry.name}"
       >
 
-      <h2>${selectedCountry.name}</h2>
+      <h2 class="mb-4 mt-2 font-display text-[1.7rem] font-extrabold text-slate-50">${selectedCountry.name}</h2>
 
-      <p><strong>Capital:</strong> ${selectedCountry.capital}</p>
+      <p class="my-3 border-b border-slate-700 pb-3 text-[0.95rem] text-slate-300"><strong>Capital:</strong> ${selectedCountry.capital}</p>
 
-      <p><strong>Region:</strong> ${selectedCountry.region}</p>
+      <p class="my-3 border-b border-slate-700 pb-3 text-[0.95rem] text-slate-300"><strong>Region:</strong> ${selectedCountry.region}</p>
 
-      <p><strong>Population:</strong> ${selectedCountry.population}</p>
+      <p class="my-3 border-b border-slate-700 pb-3 text-[0.95rem] text-slate-300"><strong>Population:</strong> ${selectedCountry.population}</p>
 
     </div>
   `;
 
 
   // Popup ko visible karna
-  countryModal.style.display = "flex";
+  openModal();
 }
 
 
@@ -438,7 +414,8 @@ function updateComparison() {
     selectedNamesHTML += `
       <button
         type="button"
-        class="remove-compare-btn"
+        class="m-1.5 cursor-pointer rounded-[0.65rem] bg-slate-700 px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-slate-600"
+        data-action="remove-compare"
         data-name="${country.name}"
       >
         Remove ${country.name}
@@ -450,9 +427,9 @@ function updateComparison() {
 
   // Comparison box ka starting HTML
   let comparisonHTML = `
-    <div class="comparison-box">
+    <div class="overflow-x-auto rounded-[1.25rem] bg-slate-900 p-6 text-white shadow-lg">
 
-      <h2>Country Comparison</h2>
+      <h2 class="mb-4 font-display text-2xl font-extrabold">Country Comparison</h2>
 
       <div>
         ${selectedNamesHTML}
@@ -464,7 +441,7 @@ function updateComparison() {
   if (comparisonData.length < 2) {
 
     comparisonHTML += `
-      <p>Select one more country to compare.</p>
+      <p class="mt-4 text-slate-300">Select one more country to compare.</p>
     `;
 
 
@@ -473,46 +450,46 @@ function updateComparison() {
 
     // Do countries select hone par comparison table banana
     comparisonHTML += `
-      <table class="comparison-table">
+      <table class="mt-4 w-full min-w-[480px] border-collapse text-center text-sm">
 
         <tr>
-          <th>Details</th>
-          <th>${comparisonData[0].name}</th>
-          <th>${comparisonData[1].name}</th>
+          <th class="border border-slate-700 bg-slate-800 p-3.5 text-sky-300">Details</th>
+          <th class="border border-slate-700 bg-slate-800 p-3.5 text-sky-300">${comparisonData[0].name}</th>
+          <th class="border border-slate-700 bg-slate-800 p-3.5 text-sky-300">${comparisonData[1].name}</th>
         </tr>
 
 
         <tr>
-          <td>Flag</td>
+          <td class="border border-slate-700 p-3.5">Flag</td>
 
-          <td>
+          <td class="border border-slate-700 p-3.5">
             <img src="${comparisonData[0].flag}" width="80" alt="Country flag">
           </td>
 
-          <td>
+          <td class="border border-slate-700 p-3.5">
             <img src="${comparisonData[1].flag}" width="80" alt="Country flag">
           </td>
         </tr>
 
 
         <tr>
-          <td>Capital</td>
-          <td>${comparisonData[0].capital}</td>
-          <td>${comparisonData[1].capital}</td>
+          <td class="border border-slate-700 p-3.5">Capital</td>
+          <td class="border border-slate-700 p-3.5">${comparisonData[0].capital}</td>
+          <td class="border border-slate-700 p-3.5">${comparisonData[1].capital}</td>
         </tr>
 
 
         <tr>
-          <td>Region</td>
-          <td>${comparisonData[0].region}</td>
-          <td>${comparisonData[1].region}</td>
+          <td class="border border-slate-700 p-3.5">Region</td>
+          <td class="border border-slate-700 p-3.5">${comparisonData[0].region}</td>
+          <td class="border border-slate-700 p-3.5">${comparisonData[1].region}</td>
         </tr>
 
 
         <tr>
-          <td>Population</td>
-          <td>${comparisonData[0].population}</td>
-          <td>${comparisonData[1].population}</td>
+          <td class="border border-slate-700 p-3.5">Population</td>
+          <td class="border border-slate-700 p-3.5">${comparisonData[0].population}</td>
+          <td class="border border-slate-700 p-3.5">${comparisonData[1].population}</td>
         </tr>
 
       </table>
@@ -534,8 +511,7 @@ function updateComparison() {
 function showError() {
 
   // User ko error message dikhana
-  container.innerHTML =
-    '<p class="empty-message">Unable to load countries. Please try again.</p>';
+  container.innerHTML = `<p class="${EMPTY_MESSAGE}">Unable to load countries. Please try again.</p>`;
 
 
   // Retry button banana
@@ -543,7 +519,8 @@ function showError() {
 
   retryBtn.type = "button";
 
-  retryBtn.className = "retry-btn";
+  retryBtn.className =
+    "mx-auto my-4 block cursor-pointer rounded-[0.65rem] bg-sky-600 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-sky-500";
 
   retryBtn.textContent = "Retry";
 
@@ -567,9 +544,9 @@ async function fetchCountries() {
 
   // API load hone tak loading skeleton dikhana
   container.innerHTML = `
-    <div class="loading-card"></div>
-    <div class="loading-card"></div>
-    <div class="loading-card"></div>
+    <div class="h-80 animate-pulse rounded-[1.25rem] bg-slate-800"></div>
+    <div class="h-80 animate-pulse rounded-[1.25rem] bg-slate-800"></div>
+    <div class="h-80 animate-pulse rounded-[1.25rem] bg-slate-800"></div>
   `;
 
 
@@ -677,8 +654,8 @@ favoritesFilter.addEventListener("change", filterCountries);
 container.addEventListener("click", (event) => {
 
 
-  // Click ki gayi jagah ke nearest button ko find karna
-  const button = event.target.closest("button");
+  // Click ki gayi jagah ke nearest action button ko find karna
+  const button = event.target.closest("button[data-action]");
 
 
   // Agar click button par nahi hua to stop
@@ -686,19 +663,19 @@ container.addEventListener("click", (event) => {
 
 
   // Favorite button click hua
-  if (button.classList.contains("favorite-btn")) {
+  if (button.dataset.action === "favorite") {
 
     toggleFavorite(button.dataset.name);
 
 
     // Details button click hua
-  } else if (button.classList.contains("details-btn")) {
+  } else if (button.dataset.action === "details") {
 
     showCountryDetails(button.dataset.name);
 
 
     // Compare button click hua
-  } else if (button.classList.contains("compare-btn")) {
+  } else if (button.dataset.action === "compare") {
 
     toggleCompare(button.dataset.name);
 
@@ -713,17 +690,13 @@ comparisonContainer.addEventListener("click", (event) => {
 
 
   // Check karna Remove button click hua hai ya nahi
-  if (event.target.classList.contains("remove-compare-btn")) {
+  const removeBtn = event.target.closest('button[data-action="remove-compare"]');
+
+  if (!removeBtn) return;
 
 
-    // Button se country ka naam lena
-    const countryName = event.target.dataset.name;
-
-
-    // Country ko comparison se remove karna
-    toggleCompare(countryName);
-
-  }
+  // Country ko comparison se remove karna
+  toggleCompare(removeBtn.dataset.name);
 
 });
 
@@ -733,7 +706,7 @@ comparisonContainer.addEventListener("click", (event) => {
 closeModal.addEventListener("click", () => {
 
   // Popup hide karna
-  countryModal.style.display = "none";
+  hideModal();
 
 });
 
@@ -741,21 +714,15 @@ closeModal.addEventListener("click", () => {
 // 20. Popup ke Bahar Click Karne par Close Karna
 
 countryModal.addEventListener("click", (event) => {
-
-
   // Agar click popup ke outer background par hua
   if (event.target === countryModal) {
-    countryModal.style.display = "none";
+    hideModal();
   }
-
 });
-
 document.addEventListener("keydown", (event) => {
   // Keyboard par Escape press hone par popup hide karna
   if (event.key === "Escape") {
-    countryModal.style.display = "none";
+    hideModal();
   }
-
 });
-
 fetchCountries();

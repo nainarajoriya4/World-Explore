@@ -9,15 +9,34 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: { extend: { fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] }, colors: { midnight: '#071426', ocean: '#0ea5e9' } } }
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['DM Sans', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            display: ['Manrope', 'sans-serif']
+          }
+        }
+      }
     };
   </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      /* Reusable emoji icon box (dashboard stats) */
+      .emoji-box {
+        @apply grid h-12 w-12 shrink-0 place-items-center rounded-2xl text-xl leading-none;
+      }
+
+      /* Small emoji used inside buttons and labels */
+      .emoji-sm {
+        @apply mr-1 inline-block text-sm leading-none;
+      }
+    }
+  </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased">
@@ -25,8 +44,7 @@
     class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/95 text-white shadow-lg shadow-slate-950/10 backdrop-blur-xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-5 px-5 py-4 lg:px-8">
       <a href="#home" class="flex items-center gap-3 no-underline">
-        <span class="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 text-xl shadow-lg shadow-cyan-500/20">🌍</span>
-        <span class="font-extrabold tracking-tight text-cyan-400"> World Explorer</span>
+        <span class="font-extrabold tracking-tight">World Explorer</span>
       </a>
       <nav class="flex items-center gap-2 text-sm font-semibold text-slate-300 sm:gap-7">
         <a class="rounded-full px-3 py-2 transition hover:bg-white/10 hover:text-white" href="#home">Home</a>
@@ -47,8 +65,8 @@
         <span
           class="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs font-bold uppercase tracking-[.2em] text-cyan-200">Your
           journey starts here</span>
-        <h1 class="mx-auto max-w-4xl font-extrabold leading-tight tracking-tight text-4xl sm:text-6xl lg:text-7xl"
-          style="font-family:Manrope,sans-serif">The world is yours<br><span
+        <h1 class="mx-auto max-w-4xl font-display text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl lg:text-7xl">The
+          world is yours<br><span
             class="bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">to discover.</span></h1>
         <p class="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">Explore countries, discover
           cultures, and uncover fascinating places across our beautiful planet.</p>
@@ -96,7 +114,7 @@
       <div class="mb-7 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
           <p class="text-xs font-extrabold uppercase tracking-[.2em] text-cyan-600">Explore the globe</p>
-          <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-slate-900" style="font-family:Manrope,sans-serif">
+          <h2 class="mt-2 font-display text-3xl font-extrabold tracking-tight text-slate-900">
             Countries around the world</h2>
           <p class="mt-1 text-sm text-slate-500">Find your next destination.</p>
         </div>
@@ -104,28 +122,36 @@
           class="w-fit rounded-full bg-white px-4 py-2 text-xs font-bold text-slate-500 shadow-sm ring-1 ring-slate-200">LIVE
           COUNTRY DIRECTORY</span>
       </div>
-      <div class="stats-container mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div class="stat-card"><span class="stat-icon bg-blue-50 text-blue-600">🌐</span>
+
+      <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div
+          class="flex items-center gap-4 rounded-[1.25rem] border border-slate-700 bg-slate-800 px-6 py-5 shadow-[0_4px_18px_rgba(0,0,0,0.15)]">
+          <span class="emoji-box bg-blue-50 text-blue-600">🌍</span>
           <div>
-            <p class="stat-label">Total countries</p>
-            <p class="stat-value" id="totalCountries">0</p>
+            <p class="text-[0.78rem] font-bold text-slate-400">Total countries</p>
+            <p class="mt-0.5 font-display text-[1.6rem] font-extrabold leading-tight text-slate-50" id="totalCountries">0</p>
           </div>
         </div>
-        <div class="stat-card"><span class="stat-icon bg-cyan-50 text-cyan-600">✦</span>
+        <div
+          class="flex items-center gap-4 rounded-[1.25rem] border border-slate-700 bg-slate-800 px-6 py-5 shadow-[0_4px_18px_rgba(0,0,0,0.15)]">
+          <span class="emoji-box bg-cyan-50 text-cyan-600">🔎</span>
           <div>
-            <p class="stat-label">Showing countries</p>
-            <p class="stat-value" id="showingCountries">0</p>
+            <p class="text-[0.78rem] font-bold text-slate-400">Showing countries</p>
+            <p class="mt-0.5 font-display text-[1.6rem] font-extrabold leading-tight text-slate-50" id="showingCountries">0</p>
           </div>
         </div>
-        <div class="stat-card"><span class="stat-icon bg-rose-50 text-rose-500">♥</span>
+        <div
+          class="flex items-center gap-4 rounded-[1.25rem] border border-slate-700 bg-slate-800 px-6 py-5 shadow-[0_4px_18px_rgba(0,0,0,0.15)]">
+          <span class="emoji-box bg-rose-50">❤️</span>
           <div>
-            <p class="stat-label">Your favorites</p>
-            <p class="stat-value" id="favoriteCount">0</p>
+            <p class="text-[0.78rem] font-bold text-slate-400">Your favorites</p>
+            <p class="mt-0.5 font-display text-[1.6rem] font-extrabold leading-tight text-slate-50" id="favoriteCount">0</p>
           </div>
         </div>
       </div>
-      <div id="countryContainer" class="country-container">
-        <p class="empty-message">Countries will appear here...</p>
+
+      <div id="countryContainer" class="grid grid-cols-1 gap-6 pb-10 sm:grid-cols-2 lg:grid-cols-3">
+        <p class="col-span-full rounded-2xl border border-dashed border-slate-600 bg-slate-800 px-4 py-12 text-center text-slate-400">Countries will appear here...</p>
       </div>
       <div id="comparisonContainer" class="pb-16"></div>
     </section>
@@ -134,14 +160,17 @@
   <footer class="border-t border-slate-200 bg-white">
     <div
       class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-7 text-sm text-slate-500 sm:flex-row lg:px-8">
-      <p class="font-bold text-slate-700">🌍 WorldExplorer</p>
+      <p class="font-bold text-slate-700"> WorldExplorer</p>
       <p>Discover more. Learn more. Explore the world.</p>
     </div>
   </footer>
 
-  <div id="countryModal" class="country-modal" role="dialog" aria-modal="true" aria-label="Country details">
-    <div class="modal-content">
-      <button id="closeModal" class="close-btn" type="button" aria-label="Close details">&times;</button>
+  <div id="countryModal"
+    class="fixed inset-0 z-[1000] hidden items-center justify-center overflow-y-auto bg-slate-950/85 p-5 backdrop-blur-md"
+    role="dialog" aria-modal="true" aria-label="Country details">
+    <div class="relative max-h-[90vh] w-full max-w-[500px] overflow-y-auto rounded-3xl border border-slate-600 bg-slate-800 p-6 text-slate-50 shadow-2xl">
+      <button id="closeModal" type="button" aria-label="Close details"
+        class="absolute right-3.5 top-3 z-[2] grid h-9 w-9 cursor-pointer place-items-center rounded-full bg-slate-700 text-2xl leading-none text-white">&times;</button>
       <div id="modalDetails"></div>
     </div>
   </div>
