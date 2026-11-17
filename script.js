@@ -21,6 +21,9 @@ const BUTTON_BASE =
 const EMPTY_MESSAGE =
   "col-span-full rounded-2xl border border-dashed border-slate-600 bg-slate-800 px-4 py-12 text-center text-slate-400";
 
+// Screen par ek time par sirf itne cards dikhane hain
+const INITIAL_COUNTRY_LIMIT = 15;
+
 // Popup open / close (Tailwind hidden + flex)
 function openModal() {
   countryModal.classList.remove("hidden");
@@ -273,8 +276,10 @@ function filterCountries() {
   });
 
 
-  // Filtered countries ko sort karke cards mein dikhana
-  renderCards(sortCountries(result));
+  // Filtered countries ko sort karke sirf pehle 15 cards dikhana
+  const visibleCountries = sortCountries(result).slice(0, INITIAL_COUNTRY_LIMIT);
+
+  renderCards(visibleCountries);
 }
 
 // 10. Favorite Add / Remove Karna
